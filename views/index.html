@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		function getRecitations(e) {
+			console.log(e.target.value);
+			var el = document.querySelector('form select[name="recitation"]');
+			
+			fetch('/recitation', {
+				method: 'POST',
+				body: JSON.stringify({
+					cid: e.target.value
+				})
+			}).then(result => result.json())
+				.then(json => {
+					console.log(json);
+					for(row in json.rows) {
+						var newOption = document.createElement('option');
+						var textnode = document.createTextNode(row.rid);
+						newOption.appendChild(textnode);
+						newOption.setAttribute('value', row.rid)
+						el.appendChild(newOption);
+					}
+					el.disabled = false;
+				})
+		}
+	</script>
+</head>
+<body>
+	<h1>Recitation Report tool</h1>
+	<form action="/" method="POST">
+		<select name="course" onchange="getRecitations(event)">
+			<option>Select course</option>
+			{% for row in rows %}
+				<option value="{{ row.cid }}">{{ row.cname }}</option>
+			{% endfor %}
+		</select>
+		<select name="recitation" disabled>
+			<option>Select recitation</option>
+		</select>
+		<select name="track">
+			<option value="A">A</option>
+			<option value="B">B</option>
+			<option value="C">C</option>
+			<option value="D">D</option>
+		</select>
+		<input type="text" name="name" /> 
+
+		<br />
+		<input type="submit" value="Submit" />
+	</form>
+</body>
+</html>
