@@ -1,16 +1,21 @@
-﻿DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS solutions;
+﻿DROP TABLE IF EXISTS student;
+DROP TABLE IF EXISTS solution;
 DROP TABLE IF EXISTS recitation;
 DROP TABLE IF EXISTS course;
 DROP TABLE IF EXISTS takes;
 DROP TABLE IF EXISTS solved;
 
-CREATE TABLE students(
+CREATE TABLE student(
 	sid 	BIGSERIAL PRIMARY KEY,
-	name 	varchar(20)	
+	sname 	varchar(20)	
 );
 
-CREATE TABLE solutions(
+CREATE TABLE course(
+	cid	BIGSERIAL PRIMARY KEY,
+	cname	varchar(10)
+);
+
+CREATE TABLE solution(
 	slnid	BIGSERIAL PRIMARY KEY,
 	rid	int,
 	points	int,
@@ -22,11 +27,6 @@ CREATE TABLE solutions(
 CREATE TABLE recitation(
 	rid 	BIGSERIAL PRIMARY KEY,
 	cid	int
-);
-
-CREATE TABLE course(
-	cid	BIGSERIAL PRIMARY KEY,
-	name	varchar(10)
 );
 
 CREATE TABLE takes (
@@ -45,8 +45,18 @@ CREATE TABLE solved (
 );
 
 
-INSERT INTO course(name) VALUES ('DD1337');
-INSERT INTO course(name) VALUES ('Envarre');
+INSERT INTO student(sname) VALUES ('Erik');
+INSERT INTO student(sname) VALUES ('Andreas');
+
+
+INSERT INTO course(cname) VALUES ('DD1337');
+INSERT INTO course(cname) VALUES ('DD1390');
+
+
+INSERT INTO takes(sid,cid) VALUES (1,1);
+INSERT INTO takes(sid,cid) VALUES (1,2);
+INSERT INTO takes(sid,cid) VALUES (2,1);
+INSERT INTO takes(sid,cid) VALUES (2,2);
 
 
 INSERT INTO recitation(cid) VALUES (1);
@@ -55,16 +65,24 @@ INSERT INTO recitation(cid) VALUES (2);
 INSERT INTO recitation(cid) VALUES (2);
 
 
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (1,1,1,0,0);
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (1,1,0,1,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,1,0,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,1,0);
 
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (2,2,1,1,0);
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (2,1,0,0,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,2,1,1,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,0,1);
 
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (3,3,1,1,1);
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (3,2,0,1,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,3,1,1,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,2,0,1,1);
 
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (4,1,0,0,1);
-INSERT INTO solutions(rid,points,u1,u2,u3) VALUES (4,2,1,1,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,0,0,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,2,1,1,0);
 
-SELECT * FROM solutions NATURAL JOIN recitation NATURAL JOIN course WHERE name = 'Envarre';
+
+INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (3,1,false,'A',1,1,1);
+INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (4,1,false,'C',1,1,0);
+
+INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (1,2,false,'B',1,0,0);
+INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (2,2,false,'B',1,1,0);
+
+--SELECT * FROM solution NATURAL JOIN recitation NATURAL JOIN course WHERE name = 'DD1337';
+--SELECT * FROM course NATURAL JOIN takes NATURAL JOIN student ORDER BY cid ASC;
