@@ -41,20 +41,27 @@ app.post('/recitation', function(req, res) {
   console.log(req.body);
   var query = squel
     .select('*')
-      .from('recitations')
+      .from('recitation')
       .where('cid=' + req.body.cid)
     .toString()
-
+  console.log(query);
   client.query(query, function(err, result) {
     if(err) res.send(err);
-    else    res.send(result);
-    console.log(result);
+    else    res.send(result.rows);
+    console.log(result.rows);
   })
 });
 
 app.post('/solve', function(req, res) {
   var body = req.body;
-
+      {
+        rid: 2,
+        name: "erik",
+        track: "a",
+        u1: 1,
+        u2: 3,
+        u3: 2
+      }
   var query = squel
     .insert()
       .into('solved')
@@ -69,7 +76,28 @@ app.post('/solve', function(req, res) {
 
   client.query(query, function(err, result) {
     if(err) res.send(err);
-    else    res.send('Solution submitted successfully.');
+    else {
+      var validq = squel
+        .select('points')
+          .from('solutions')
+          .where('rid = ?', body.rid)
+          .where('u1 <= ?', body.u1)
+          .where('u2 <= ?', body.u2)
+          .where('u3 <= ?', body.u3)
+          .order('points DESC').
+          .limit(1)
+        .toString()
+
+        client.query(validq, function(err, reslult) {
+          var points = 0;
+
+          if(err) res.send(err)
+          else if if(results.rowCount > 0)
+            points = result.rows[0].points
+
+          res.send('This is how many points you got: ', points);
+        })
+      }
   });
 
 });

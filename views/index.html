@@ -9,17 +9,21 @@
 			
 			fetch('/recitation', {
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				body: JSON.stringify({
 					cid: e.target.value
 				})
 			}).then(result => result.json())
 				.then(json => {
 					console.log(json);
-					for(row in json.rows) {
+					for(row in json) {
+						console.log(row);
 						var newOption = document.createElement('option');
-						var textnode = document.createTextNode(row.rid);
+						var textnode = document.createTextNode(json[row].rid);
 						newOption.appendChild(textnode);
-						newOption.setAttribute('value', row.rid)
+						newOption.setAttribute('value', json[row].rid)
 						el.appendChild(newOption);
 					}
 					el.disabled = false;
@@ -29,7 +33,7 @@
 </head>
 <body>
 	<h1>Recitation Report tool</h1>
-	<form action="/" method="POST">
+	<form action="/solve" method="POST">
 		<select name="course" onchange="getRecitations(event)">
 			<option>Select course</option>
 			{% for row in rows %}
