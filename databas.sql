@@ -65,17 +65,25 @@ INSERT INTO recitation(cid) VALUES (2);
 INSERT INTO recitation(cid) VALUES (2);
 
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,1,0,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,1,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,3,2,5);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,3,0,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,2,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,0,5);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,2,1,1,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,0,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,1,1,3);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,1,0,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,1,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,0,3);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,3,1,1,1);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,2,0,1,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,2,2,2);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,2,0,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,0,2,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,0,0,2);
 
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,1,1,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,1,0,0);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,0,1,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,0,0,1);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,2,1,1,0);
 
 
 INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (3,1,false,'A',1,1,1);
