@@ -65,7 +65,7 @@ app.post('/assignments', function(req, res) {
   console.log(query);
   client.query(query, function(err, result) {
     if(err) res.send(err);
-    else    res.send(result.rows);
+    else    res.send(result.rows[0]);
     console.log(result.rows);
   })
 });
