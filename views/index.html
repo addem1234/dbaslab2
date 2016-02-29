@@ -6,7 +6,7 @@
 		function getRecitations(e) {
 			console.log(e.target.value);
 			var el = document.querySelector('form select[name="recitation"]');
-			
+
 			fetch('/recitation', {
 				method: 'POST',
 				headers: {
@@ -16,18 +16,45 @@
 					cid: e.target.value
 				})
 			}).then(result => result.json())
-				.then(json => {
-					console.log(json);
-					for(row in json) {
-						console.log(row);
-						var newOption = document.createElement('option');
-						var textnode = document.createTextNode(json[row].rid);
-						newOption.appendChild(textnode);
-						newOption.setAttribute('value', json[row].rid)
-						el.appendChild(newOption);
-					}
-					el.disabled = false;
+		.then(json => {
+				console.log(json);
+			for(row in json) {
+				console.log(row);
+				var newOption = document.createElement('option');
+				var textnode = document.createTextNode(json[row].rid);
+				newOption.appendChild(textnode);
+				newOption.setAttribute('value', json[row].rid)
+				el.appendChild(newOption);
+			}
+			el.disabled = false;
+		})
+		}
+
+		function getAssignments(e) {
+			console.log(e.target.value);
+			var el = document.querySelector('form select[name="recitation"]'); //TODO
+
+			fetch('/assignments', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					rid: e.target.value
 				})
+			}).then(result => result.json())
+		.then(json => {
+				console.log(json);
+			for(row in json) {
+				console.log(row);
+				var newOption = document.createElement('option');
+				var textnode = document.createTextNode(json[row].rid);
+				newOption.appendChild(textnode);
+				newOption.setAttribute('value', json[row].rid)
+				el.appendChild(newOption);
+			}
+			el.disabled = false;
+		})
 		}
 	</script>
 </head>
@@ -40,7 +67,8 @@
 				<option value="{{ row.cid }}">{{ row.cname }}</option>
 			{% endfor %}
 		</select>
-		<select name="recitation" disabled>
+
+		<select name="recitation" onchange="getAssignments(event)" disabled>
 			<option>Select recitation</option>
 		</select>
 		<select name="track">

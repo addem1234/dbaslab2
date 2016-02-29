@@ -40,10 +40,27 @@ app.get('/', function(req, res) {
 app.post('/recitation', function(req, res) {
   console.log(req.body);
   var query = squel
-    .select('*')
+      .select('*')
       .from('recitation')
       .where('cid=' + req.body.cid)
-    .toString()
+      .toString()
+  console.log(query);
+  client.query(query, function(err, result) {
+    if(err) res.send(err);
+    else    res.send(result.rows);
+    console.log(result.rows);
+  })
+});
+
+app.post('/assignments', function(req, res) {
+  console.log(req.body);
+  var query = squel
+      .select('points, u1, u2, u3')
+      .from('solution')
+      .where('rid=' + req.body.rid)
+      .order("points", false)
+      .limit(1)
+      .toString();
   console.log(query);
   client.query(query, function(err, result) {
     if(err) res.send(err);
@@ -54,14 +71,14 @@ app.post('/recitation', function(req, res) {
 
 app.post('/solve', function(req, res) {
   var body = req.body;
-      {
+      /*{
         rid: 2,
         name: "erik",
         track: "a",
         u1: 1,
         u2: 3,
         u3: 2
-      }
+      }*/
   var query = squel
     .insert()
       .into('solved')
@@ -72,7 +89,7 @@ app.post('/solve', function(req, res) {
       .set('u1',     body.u1)
       .set('u2',     body.u2)
       .set('u3',     body.u3)
-    .toString()
+    .toString();
 
   client.query(query, function(err, result) {
     if(err) res.send(err);
@@ -84,15 +101,15 @@ app.post('/solve', function(req, res) {
           .where('u1 <= ?', body.u1)
           .where('u2 <= ?', body.u2)
           .where('u3 <= ?', body.u3)
-          .order('points DESC').
+          .order('points DESC')
           .limit(1)
-        .toString()
+        .toString();
 
         client.query(validq, function(err, reslult) {
           var points = 0;
 
           if(err) res.send(err)
-          else if if(results.rowCount > 0)
+          else if(results.rowCount > 0)
             points = result.rows[0].points
 
           res.send('This is how many points you got: ', points);

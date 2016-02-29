@@ -7,31 +7,31 @@ DROP TABLE IF EXISTS solved;
 
 CREATE TABLE student(
 	sid 	BIGSERIAL PRIMARY KEY,
-	sname 	varchar(20)	
+	sname 	varchar(20)
 );
 
 CREATE TABLE course(
-	cid	BIGSERIAL PRIMARY KEY,
+	cid	    BIGSERIAL PRIMARY KEY,
 	cname	varchar(10)
 );
 
 CREATE TABLE solution(
 	slnid	BIGSERIAL PRIMARY KEY,
-	rid	int,
+	rid	    int,
 	points	int,
-	u1	int,
-	u2	int,
-	u3	int
+	u1	    int,
+	u2  	int,
+	u3	    int
 );
 
 CREATE TABLE recitation(
 	rid 	BIGSERIAL PRIMARY KEY,
-	cid	int
+	cid	    int
 );
 
 CREATE TABLE takes (
-	sid	BIGSERIAL,
-	cid	BIGSERIAL
+	sid	    BIGSERIAL,
+	cid	    BIGSERIAL
 );
 
 CREATE TABLE solved (
@@ -39,9 +39,9 @@ CREATE TABLE solved (
 	sid 	BIGSERIAL,
 	called	boolean,
 	track	char(1),
-	u1	int,
-	u2	int,
-	u3	int
+	u1	    int,
+	u2	    int,
+	u3	    int
 );
 
 
