@@ -1,9 +1,9 @@
-﻿DROP TABLE IF EXISTS student;
-DROP TABLE IF EXISTS solution;
-DROP TABLE IF EXISTS recitation;
-DROP TABLE IF EXISTS course;
-DROP TABLE IF EXISTS takes;
-DROP TABLE IF EXISTS solved;
+﻿DROP TABLE student;
+DROP TABLE solution;
+DROP TABLE recitation;
+DROP TABLE course;
+DROP TABLE takes;
+DROP TABLE solved;
 
 CREATE TABLE student(
 	sid 	BIGSERIAL PRIMARY KEY,
@@ -11,39 +11,47 @@ CREATE TABLE student(
 );
 
 CREATE TABLE course(
-	cid	    BIGSERIAL PRIMARY KEY,
+	cid		BIGSERIAL PRIMARY KEY,
 	cname	varchar(10)
 );
 
 CREATE TABLE solution(
-	slnid	BIGSERIAL PRIMARY KEY,
 	rid	    int,
-	points	int,
-	u1	    int,
-	u2  	int,
-	u3	    int
+	assign	int,
+	subtask	int
 );
+
+/*
+	{
+		1: ['a', 'b', 'c'],
+		2: ['a', 'b', 'c', 'd'],
+		3: ['a', 'b']
+	}
+*/
 
 CREATE TABLE recitation(
 	rid 	BIGSERIAL PRIMARY KEY,
-	cid	    int
+	cid		int
 );
 
 CREATE TABLE takes (
-	sid	    BIGSERIAL,
-	cid	    BIGSERIAL
+	sid		BIGSERIAL,
+	cid		BIGSERIAL
 );
 
 CREATE TABLE solved (
-	slnid	BIGSERIAL,
+	rid		BIGSERIAL,
 	sid 	BIGSERIAL,
-	called	boolean,
 	track	char(1),
-	u1	    int,
-	u2	    int,
-	u3	    int
+	points	int,
+	called	boolean
 );
 
+CREATE TABLE minsolved (
+	rid		BIGSERIAL,
+	assign	int,
+	minimum	int
+);
 
 INSERT INTO student(sname) VALUES ('Erik');
 INSERT INTO student(sname) VALUES ('Andreas');
@@ -70,17 +78,17 @@ INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,3,0,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,2,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,0,5);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,1,1,3);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,3,1,1,3);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,1,0,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,1,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,0,3);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,2,2,2);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,3,2,2,2);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,2,0,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,0,2,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,0,0,2);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,1,1,1);
+INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,3,1,1,1);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,1,0,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,0,1,0);
 INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,0,0,1);

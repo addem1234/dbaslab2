@@ -38,6 +38,10 @@ app.get('/', function(req, res) {
   });
 });
 
+app.get('/js/main.js', function(req, res) {
+  res.sendFile(__dirname + '/js/main.js');
+});
+
 app.post('/recitation', function(req, res) {
   console.log(req.body);
   var query = squel

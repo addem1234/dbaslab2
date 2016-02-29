@@ -2,92 +2,7 @@
 <html>
 <head>
 	<title></title>
-	<script type="text/javascript">
-		function getRecitations(e) {
-			console.log(e.target.value);
-			var el = document.querySelector('form select[name="recitation"]');
-
-			fetch('/recitation', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					cid: e.target.value
-				})
-			}).then(result => result.json())
-			.then(json => {
-				console.log(json);
-				el.innerHTML = '<option>Select recitation</option>';
-				for(row in json) {
-					console.log(row);
-					var newOption = document.createElement('option');
-					var textnode = document.createTextNode(json[row].rid);
-					newOption.appendChild(textnode);
-					newOption.setAttribute('value', json[row].rid)
-					el.appendChild(newOption);
-				}
-				el.disabled = false;
-			})
-		}
-
-		function createCheckboxes(u, number, el) {
-			var alfabet = "abcdefghijklmnopqrstuvxyz"
-			for(var letter in alfabet.substring(0,number)) {
-				var newCheckbox = document.createElement('input');
-				var textnode = document.createTextNode(u + letter);
-				newCheckbox.appendChild(textnode);
-				newCheckbox.setAttribute('value', u);
-				newCheckbox.setAttribute('type', 'checkbox');
-				el.appendChild(newCheckbox);
-			}
-		}
-
-		function getAssignments(e) {
-			console.log(e.target.value);
-			var el = document.querySelector('div[id="checkboxes"]');
-
-			fetch('/assignments', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					rid: e.target.value
-				})
-			}).then(result => result.json())
-			.then(json => {
-				console.log(json);
-				el.innerHTML = '';
-				createCheckboxes('1', json.u1, el);
-				createCheckboxes('2', json.u2, el);
-				createCheckboxes('3', json.u3, el);
-			})
-		}
-
-		function solve(e) {
-			console.log(e.target.value);
-			var el = document.querySelector('div[id="checkboxes"]');
-
-			fetch('/assignments', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					rid: e.target.rid,
-					name: e.target.name,
-					track: e.target.track,
-					u1: document.querySelectorAll('input[type="checkbox"][value="1"]:checked').length,
-					u2: document.querySelectorAll('input[type="checkbox"][value="2"]:checked').length,
-					u3: document.querySelectorAll('input[type="checkbox"][value="3"]:checked').length,
-				})
-			}).then(result => result.json())
-			.then(json => {
-				alert(json.result)
-			})
-		}
-	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/2.3.0/nunjucks.min.js"></script>
 </head>
 <body>
 	<h1>Recitation Report tool</h1>
@@ -99,8 +14,11 @@
 			{% endfor %}
 		</select>
 
-		<select name="recitation" onchange="getAssignments(event)" disabled>
+		<select id="recitations" name="recitation" onchange="getAssignments(event)" disabled>
 			<option>Select recitation</option>
+			{% for rid in rids %}
+				<option value="{{rid}}">{{rid}}</option>
+			{% endfor %}
 		</select>
 		<select name="track">
 			<option value="A">A</option>
@@ -110,14 +28,14 @@
 		</select>
 		<input type="text" name="name" /> 
 		<div id="checkboxes">
-			<input value="1" type="checkbox">1a</input>
-			<input value="1" type="checkbox">1b</input>
-			<input value="1" type="checkbox">1c</input>
-			<input value="2" type="checkbox">2a</input>
-			<input value="2" type="checkbox">2b</input>
-			<input value="2" type="checkbox">2c</input>
+			{% for number, letters in assignments %}
+				{% for letter in letters %}
+					<label><input value="{{number}}" type="checkbox" />{{number}}{{letter}}</label>
+				{% endfor %}
+			{% endfor %}
 		</div>
 		<input type="submit" value="Submit" />
 	</form>
+	<script type="text/javascript" src="/js/main.js"></script>
 </body>
 </html>
