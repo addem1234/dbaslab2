@@ -10,8 +10,9 @@ var config     = require('./config');
 var app        = express();
 
 nunjucks.configure('views', {
-    autoescape: true,
-    express: app
+  watch: true,  
+  autoescape: true,
+  express: app
 });
 
 var client = new pg.Client(config.conString);
