@@ -119,9 +119,8 @@ app.post('/solve', function(req, res) {
 
           if(err) res.send(err)
           else if(results.rowCount > 0)
-            points = result.rows[0].points
+            points = result.rows[0].points;
 
-          res.send('This is how many points you got: ', points);
         })
       }
   });
@@ -143,3 +142,20 @@ app.post('/call', function(req, res) {
 
 app.listen(config.PORT);
 console.log('Listening on port', config.PORT);
+
+function addSolved(rid, sid, track, points, called) {
+  var query = squel.insert()
+      .into("solved")
+      .set("rid", rid)
+      .set("sid", sid)
+      .set("track", track)
+      .set("points", points)
+      .set("called", called)
+      .toString();
+
+  client.query(query, function(err, result) {
+    if (err) res.send(err);
+    else res.send('This is how many points you got: ', points);
+    console.log(result.rows);
+  });
+}
