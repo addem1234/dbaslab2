@@ -88,41 +88,55 @@ app.post('/solve', function(req, res) {
         u2: 3,
         u3: 2
       }*/
-  var query = squel
-    .insert()
-      .into('solved')
-      .set('slnid',  body.slnid)
-      .set('sid',    body.sid)
-      .set('called', false)
-      .set('track',  body.track)
-      .set('u1',     body.u1)
-      .set('u2',     body.u2)
-      .set('u3',     body.u3)
-    .toString();
 
-  client.query(query, function(err, result) {
-    if(err) res.send(err);
-    else {
-      var validq = squel
-        .select('points')
-          .from('solutions')
-          .where('rid = ?', body.rid)
-          .where('u1 <= ?', body.u1)
-          .where('u2 <= ?', body.u2)
-          .where('u3 <= ?', body.u3)
-          .order('points DESC')
-          .limit(1)
-        .toString();
+  var nameQuery = squel
+    .select('sid')
+      .from('student')
+      .where('sname = ?', body.name)
+    .toString()
 
-        client.query(validq, function(err, reslult) {
+  var ptsQuery = squel
+    .select('assign, min')
+      .from('solution')
+      .where('rid = ?', body.rid)
+    .toString()
+
+  client.query(nameQuery, function(err, result) {
+    if(err) res.send("didnt find name");
+    else if (result.rowCount > 0) {
+      var sid = result.rows[0].sid
+      client.query(ptsQuery, function(err, result) {
+        if(err) res.send(err)
+        else if(result.rowCount > 0) {
           var points = 0;
+          for(var i in result.rows) {
+            var row = result.rows[i];
+            if(body[row.assign] >= row.min)
+              points += 1;
+          }
+          console.log(points);
+          var query = squel.insert()
+            .into("solved")
+              .set("rid", body.rid)
+              .set("sid", sid)
+              .set("track", body.track)
+              .set("points", points)
+              .set("called", false)
+            .toString();
 
-          if(err) res.send(err)
-          else if(results.rowCount > 0)
-            points = result.rows[0].points;
-
-        })
-      }
+          client.query(query, function(err, result) {
+            if (err) res.send(err);
+            else res.send('This is how many points you got: ' + points);
+          });
+        }
+        else {
+          console.log("Couldnt find assignments");
+        }
+      })
+    }
+    else {
+      res.send("Didnt find name");
+    }
   });
 
 });
@@ -142,20 +156,3 @@ app.post('/call', function(req, res) {
 
 app.listen(config.PORT);
 console.log('Listening on port', config.PORT);
-
-function addSolved(rid, sid, track, points, called) {
-  var query = squel.insert()
-      .into("solved")
-      .set("rid", rid)
-      .set("sid", sid)
-      .set("track", track)
-      .set("points", points)
-      .set("called", called)
-      .toString();
-
-  client.query(query, function(err, result) {
-    if (err) res.send(err);
-    else res.send('This is how many points you got: ', points);
-    console.log(result.rows);
-  });
-}

@@ -92,7 +92,7 @@ function solve(e) {
 			solved_object[index] = 1
 	}
 
-	fetch('/assignments', {
+	fetch('/solve', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -102,8 +102,8 @@ function solve(e) {
 			name: e.target.name.value,
 			track: e.target.track.value
 		}, solved_object))
-	}).then(result => result.json())
-	.then(json => {
-		alert(json.result)
+	}).then(result => result.text())
+	.then(text => {
+		alert(text);
 	})
 }
