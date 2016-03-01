@@ -18,7 +18,8 @@ CREATE TABLE course(
 CREATE TABLE solution(
 	rid	    int,
 	assign	int,
-	subtask	int
+	max	int,	--The amount of subtasks available for the assignment
+	min	int	--The amount of subtasks one needs to solve for credit in the assignment
 );
 
 /*
@@ -47,12 +48,6 @@ CREATE TABLE solved (
 	called	boolean
 );
 
-CREATE TABLE minsolved (
-	rid		BIGSERIAL,
-	assign	int,
-	minimum	int
-);
-
 INSERT INTO student(sname) VALUES ('Erik');
 INSERT INTO student(sname) VALUES ('Andreas');
 
@@ -73,32 +68,25 @@ INSERT INTO recitation(cid) VALUES (2);
 INSERT INTO recitation(cid) VALUES (2);
 
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,3,3,2,5);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,3,0,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,2,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (1,1,0,0,5);
+INSERT INTO solution(rid,assign,max,min) VALUES (1,1,4,3);
+INSERT INTO solution(rid,assign,max,min) VALUES (1,2,3,2);
+INSERT INTO solution(rid,assign,max,min) VALUES (1,3,2,2);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,3,1,1,3);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,1,0,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,1,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (2,1,0,0,3);
+INSERT INTO solution(rid,assign,max,min) VALUES (2,1,3,2);
+INSERT INTO solution(rid,assign,max,min) VALUES (2,2,3,2);
+INSERT INTO solution(rid,assign,max,min) VALUES (2,3,4,2);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,3,2,2,2);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,2,0,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,0,2,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (3,1,0,0,2);
+INSERT INTO solution(rid,assign,max,min) VALUES (3,1,2,2);
+INSERT INTO solution(rid,assign,max,min) VALUES (3,2,2,2);
 
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,3,1,1,1);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,1,0,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,0,1,0);
-INSERT INTO solution(rid,points,u1,u2,u3) VALUES (4,1,0,0,1);
+INSERT INTO solution(rid,assign,max,min) VALUES (4,1,1,1);
+INSERT INTO solution(rid,assign,max,min) VALUES (4,2,1,1);
+INSERT INTO solution(rid,assign,max,min) VALUES (4,3,3,2);
 
 
-INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (3,1,false,'A',1,1,1);
-INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (4,1,false,'C',1,1,0);
+INSERT INTO solved(rid,sid,track,points,called) VALUES (3,1,'A',1,false);
+INSERT INTO solved(rid,sid,track,points,called) VALUES (4,1,'A',3,false);
 
-INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (1,2,false,'B',1,0,0);
-INSERT INTO solved(slnid,sid,called,track,u1,u2,u3) VALUES (2,2,false,'B',1,1,0);
-
---SELECT * FROM solution NATURAL JOIN recitation NATURAL JOIN course WHERE name = 'DD1337';
---SELECT * FROM course NATURAL JOIN takes NATURAL JOIN student ORDER BY cid ASC;
+INSERT INTO solved(rid,sid,track,points,called) VALUES (1,2,'A',3,false);
+INSERT INTO solved(rid,sid,track,points,called) VALUES (2,2,'C',2,false);
+INSERT INTO solved(rid,sid,track,points,called) VALUES (4,2,'B',3,false);
