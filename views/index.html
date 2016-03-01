@@ -7,7 +7,7 @@
 <body>
 	<h1>Recitation Report tool</h1>
 	<form onsubmit="solve(event)">
-		<select name="course" onchange="getRecitations(event)">
+		<select id="courses" name="course" onchange="getRecitations(event)">
 			<option>Select course</option>
 			{% for row in rows %}
 				<option value="{{ row.cid }}">{{ row.cname }}</option>

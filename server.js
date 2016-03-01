@@ -26,20 +26,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
-  var query = squel
-    .select('*')
-      .from('course')
-    .toString();
-
-  client.query(query, function(err, result) {
-    if(err) res.send(err);
-    else    res.render('index.html', result);
-    console.log(result.rows);
-  });
+  res.sendFile(__dirname + '/views/index.html');
 });
 
 app.get('/js/main.js', function(req, res) {
   res.sendFile(__dirname + '/js/main.js');
+});
+
+
+app.post('/course', function(req, res) {
+  console.log(req.body);
+  var query = squel
+      .select('*')
+      .from('course')
+      .toString()
+  console.log(query);
+  client.query(query, function(err, result) {
+    if(err) res.send(err);
+    else    res.send(result.rows);
+    console.log(result.rows);
+  })
 });
 
 app.post('/recitation', function(req, res) {
@@ -60,16 +66,14 @@ app.post('/recitation', function(req, res) {
 app.post('/assignments', function(req, res) {
   console.log(req.body);
   var query = squel
-      .select('points, u1, u2, u3')
+      .select('assign, max')
       .from('solution')
       .where('rid=' + req.body.rid)
-      .order("points", false)
-      .limit(1)
       .toString();
   console.log(query);
   client.query(query, function(err, result) {
     if(err) res.send(err);
-    else    res.send(result.rows[0]);
+    else    res.send(result.rows);
     console.log(result.rows);
   })
 });
